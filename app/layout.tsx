@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { Inter, Oswald } from "next/font/google";
+import { Inter, Oswald, Outfit } from "next/font/google";
 import "./globals.css";
 
 const inter = Inter({
@@ -12,6 +12,11 @@ const oswald = Oswald({
   variable: "--font-oswald",
   display: "swap",
 });
+const outfit = Outfit({
+  subsets: ["latin"],
+  variable: "--font-outfit",
+  display: "swap",
+});
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://bbpartners.co.kr"),
@@ -19,7 +24,8 @@ export const metadata: Metadata = {
     default: "bbpartners | Just Execution",
     template: "%s | bbpartners",
   },
-  description: "더블비 파트너스(bbpartners)는 Blood Brother의 마인드로 럭셔리 브랜드 경험을 완성하는 실행 중심의 파트너입니다. 15년 이상의 프리미엄 브랜드 이벤트 기획 및 운영 노하우를 보유하고 있습니다.",
+  description:
+    "더블비 파트너스(bbpartners)는 Blood Brother의 마인드로 럭셔리 브랜드 경험을 완성하는 실행 중심의 파트너입니다. 15년 이상의 프리미엄 브랜드 이벤트 기획 및 운영 노하우를 보유하고 있습니다.",
   keywords: [
     "이벤트 대행사",
     "BTL 대행사",
@@ -35,7 +41,7 @@ export const metadata: Metadata = {
     "Event Agency Korea",
     "BTL Marketing",
     "Automotive Events",
-    "Luxury Brand Experience"
+    "Luxury Brand Experience",
   ],
   authors: [{ name: "bbpartners" }],
   creator: "bbpartners",
@@ -47,7 +53,8 @@ export const metadata: Metadata = {
   },
   openGraph: {
     title: "bbpartners | Just Execution",
-    description: "Execution Without Excuses. 럭셔리 브랜드 경험의 새로운 기준, 더블비 파트너스입니다.",
+    description:
+      "Execution Without Excuses. 럭셔리 브랜드 경험의 새로운 기준, 더블비 파트너스입니다.",
     url: "https://bbpartners.co.kr",
     siteName: "bbpartners",
     locale: "ko_KR",
@@ -65,7 +72,9 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "bbpartners | Just Execution",
     description: "We never say no. Just Execution. 럭셔리 브랜드 실행 파트너.",
-    images: ["https://images.unsplash.com/photo-1493238792000-8113da705763?q=80&w=2070&auto=format&fit=crop"],
+    images: [
+      "https://images.unsplash.com/photo-1493238792000-8113da705763?q=80&w=2070&auto=format&fit=crop",
+    ],
   },
   robots: {
     index: true,
@@ -94,7 +103,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="ko">
-      <body className={`${inter.variable} ${oswald.variable} font-sans`}>
+      <body
+        className={`${inter.variable} ${oswald.variable} ${outfit.variable} font-sans`}
+      >
         {children}
       </body>
     </html>
