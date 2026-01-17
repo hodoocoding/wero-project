@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { Inter, Oswald, Outfit } from "next/font/google";
 import "./globals.css";
+import JsonLd from "../components/JsonLd";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -102,10 +103,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="ko">
+    <html lang="ko" suppressHydrationWarning>
       <body
         className={`${inter.variable} ${oswald.variable} ${outfit.variable} font-sans`}
       >
+        <JsonLd />
         {children}
       </body>
     </html>
