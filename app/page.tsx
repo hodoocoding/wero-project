@@ -1,6 +1,10 @@
 import Navbar from "../components/Navbar";
 import Hero from "../components/Hero";
 import Marquee from "../components/Marquee";
+import About from "../components/About";
+import Services from "../components/Services";
+import Works from "../components/Works";
+import Contact from "../components/Contact";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 
@@ -32,13 +36,14 @@ export default function Home() {
     <div className="bg-brand-black min-h-screen text-white font-sans selection:bg-brand-accent selection:text-black">
       <Navbar />
       <main>
+        {/* Hero - PC: compact(70vh), Mobile: full screen */}
         <Hero />
         <Marquee />
 
-        {/* Quick Navigation Section */}
-        <section className="py-24 bg-brand-dark">
+        {/* PC Only: Quick Navigation Cards */}
+        <section className="hidden md:block py-16 bg-brand-dark">
           <div className="container mx-auto px-6">
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+            <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
               {quickLinks.map((link) => (
                 <Link
                   key={link.title}
@@ -63,6 +68,14 @@ export default function Home() {
             </div>
           </div>
         </section>
+
+        {/* Mobile Only: Full SPA Sections */}
+        <div className="md:hidden">
+          <About />
+          <Services />
+          <Works />
+          <Contact />
+        </div>
       </main>
     </div>
   );

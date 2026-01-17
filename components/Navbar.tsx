@@ -10,6 +10,8 @@ const Navbar: React.FC = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const pathname = usePathname();
 
+  // PC에서는 페이지 라우트, Mobile에서는 동일한 링크 사용
+  // 모바일에서 SPA 경험은 page.tsx의 CSS hidden/block으로 처리됨
   const navLinks = [
     { name: "ABOUT", href: "/about" },
     { name: "BUSINESS", href: "/services" },

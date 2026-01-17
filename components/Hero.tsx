@@ -66,7 +66,7 @@ const Hero: React.FC = () => {
   }, [currentVideoIndex]);
 
   return (
-    <section className="relative h-screen w-full flex items-center justify-center overflow-hidden bg-brand-black">
+    <section className="relative w-full flex items-center justify-center overflow-hidden bg-brand-black h-screen md:h-[70vh]">
       {/* Background Videos Container */}
       <div className="absolute inset-0 w-full h-full">
         {/* 현재 재생 중인 비디오 */}
@@ -157,8 +157,8 @@ const Hero: React.FC = () => {
         ))}
       </div>
 
-      {/* Scroll Indicator */}
-      <div className="absolute bottom-10 left-1/2 transform -translate-x-1/2 animate-bounce flex flex-col items-center gap-2 opacity-50">
+      {/* Scroll Indicator - hide on PC (md+), show on mobile */}
+      <div className="md:hidden absolute bottom-10 left-1/2 transform -translate-x-1/2 animate-bounce flex flex-col items-center gap-2 opacity-50">
         <span className="text-[10px] tracking-widest uppercase">Scroll</span>
         <ChevronDown className="text-white" size={24} />
       </div>
