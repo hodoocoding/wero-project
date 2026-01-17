@@ -1,10 +1,36 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 
 interface TextBlockProps {
   kor: string;
   eng: string;
 }
+
+// Custom hook for scroll animation
+const useInView = (threshold = 0.1) => {
+  const ref = useRef<HTMLDivElement>(null);
+  const [isVisible, setIsVisible] = useState(false);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsVisible(true);
+          observer.disconnect();
+        }
+      },
+      { threshold },
+    );
+
+    if (ref.current) {
+      observer.observe(ref.current);
+    }
+
+    return () => observer.disconnect();
+  }, [threshold]);
+
+  return { ref, isVisible };
+};
 
 const TextReveal: React.FC<TextBlockProps> = ({ kor, eng }) => {
   const [isHovered, setIsHovered] = useState(false);
@@ -24,9 +50,9 @@ const TextReveal: React.FC<TextBlockProps> = ({ kor, eng }) => {
               : "opacity-100 translate-y-0"
           }`}
         >
-          <p className="text-lg md:text-xl text-gray-300 leading-relaxed break-keep">
+          <p className="text-lg md:text-xl text-gray-300 leading-loose break-keep">
             {kor.split("\n").map((line, i) => (
-              <span key={i} className="block">
+              <span key={i} className="block mb-1">
                 {line}
               </span>
             ))}
@@ -41,9 +67,9 @@ const TextReveal: React.FC<TextBlockProps> = ({ kor, eng }) => {
               : "opacity-0 translate-y-[10px]"
           }`}
         >
-          <p className="text-lg md:text-xl text-brand-accent font-heading leading-relaxed">
+          <p className="text-lg md:text-xl text-brand-accent font-heading leading-loose">
             {eng.split("\n").map((line, i) => (
-              <span key={i} className="block">
+              <span key={i} className="block mb-1">
                 {line}
               </span>
             ))}
@@ -55,12 +81,24 @@ const TextReveal: React.FC<TextBlockProps> = ({ kor, eng }) => {
 };
 
 const About: React.FC = () => {
+  const whoWeAreRef = useInView(0.2);
+  const visionRef = useInView(0.2);
+  const missionRef = useInView(0.2);
+  const valuesRef = useInView(0.15);
+
   return (
-    <section id="about" className="py-32 bg-brand-black relative">
+    <section id="about" className="py-40 bg-brand-black relative">
       <div className="container mx-auto px-6">
         {/* WHO WE ARE */}
-        <div className="max-w-4xl mb-32">
-          <h3 className="text-brand-accent font-bold tracking-widest uppercase mb-6 text-xs md:text-sm">
+        <div
+          ref={whoWeAreRef.ref}
+          className={`max-w-4xl mb-40 transition-all duration-700 ${
+            whoWeAreRef.isVisible
+              ? "opacity-100 translate-y-0"
+              : "opacity-0 translate-y-8"
+          }`}
+        >
+          <h3 className="text-brand-accent font-bold tracking-widest uppercase mb-8 text-xs md:text-sm">
             WHO WE ARE
           </h3>
           <TextReveal
@@ -70,14 +108,21 @@ const About: React.FC = () => {
         </div>
 
         {/* VISION & MISSION Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-16 md:gap-24 border-t border-white/10 pt-16">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-20 md:gap-32 border-t border-white/10 pt-20">
           {/* VISION */}
-          <div className="flex flex-col items-start text-left">
-            <h3 className="text-brand-accent font-bold tracking-widest uppercase mb-6 text-xs md:text-sm">
+          <div
+            ref={visionRef.ref}
+            className={`flex flex-col items-start text-left transition-all duration-700 delay-100 ${
+              visionRef.isVisible
+                ? "opacity-100 translate-y-0"
+                : "opacity-0 translate-y-8"
+            }`}
+          >
+            <h3 className="text-brand-accent font-bold tracking-widest uppercase mb-8 text-xs md:text-sm">
               VISION
             </h3>
-            <div className="mb-8">
-              <h4 className="text-3xl md:text-4xl font-heading font-semibold text-white uppercase tracking-wide leading-tight">
+            <div className="mb-10">
+              <h4 className="text-3xl md:text-4xl font-heading font-semibold text-white uppercase tracking-wide leading-snug">
                 Be the first. <br />
                 Be the lead.
               </h4>
@@ -89,12 +134,19 @@ const About: React.FC = () => {
           </div>
 
           {/* MISSION */}
-          <div className="flex flex-col items-start text-left">
-            <h3 className="text-brand-accent font-bold tracking-widest uppercase mb-6 text-xs md:text-sm">
+          <div
+            ref={missionRef.ref}
+            className={`flex flex-col items-start text-left transition-all duration-700 delay-200 ${
+              missionRef.isVisible
+                ? "opacity-100 translate-y-0"
+                : "opacity-0 translate-y-8"
+            }`}
+          >
+            <h3 className="text-brand-accent font-bold tracking-widest uppercase mb-8 text-xs md:text-sm">
               MISSION
             </h3>
-            <div className="mb-8">
-              <h4 className="text-3xl md:text-4xl font-heading font-semibold text-white uppercase tracking-wide leading-tight">
+            <div className="mb-10">
+              <h4 className="text-3xl md:text-4xl font-heading font-semibold text-white uppercase tracking-wide leading-snug">
                 Execution <br />
                 Without Excuses.
               </h4>
@@ -107,47 +159,60 @@ const About: React.FC = () => {
         </div>
 
         {/* CORE VALUES */}
-        <div className="mt-32">
-          <h3 className="text-brand-accent font-bold tracking-widest uppercase mb-12 text-xs md:text-sm text-left">
+        <div
+          ref={valuesRef.ref}
+          className={`mt-40 transition-all duration-700 ${
+            valuesRef.isVisible
+              ? "opacity-100 translate-y-0"
+              : "opacity-0 translate-y-8"
+          }`}
+        >
+          <h3 className="text-brand-accent font-bold tracking-widest uppercase mb-16 text-xs md:text-sm text-left">
             CORE VALUES
           </h3>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <div className="bg-brand-dark p-8 border border-white/5 hover:border-brand-accent/50 transition-colors group">
-              <h4 className="text-2xl md:text-3xl font-heading font-semibold text-white uppercase tracking-wide mb-4 group-hover:text-brand-accent transition-colors">
-                Bold
-              </h4>
-              <p className="text-gray-300 text-base md:text-lg leading-relaxed mb-4 break-keep">
-                결단력 있게 판단하고, 책임 있게 실행합니다.
-              </p>
-              <p className="text-gray-500 text-sm md:text-base leading-relaxed group-hover:text-white transition-colors font-heading">
-                Fully understanding the situation and making accountable
-                decisions without hesitation.
-              </p>
-            </div>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {[
+              {
+                title: "Bold",
+                kor: "결단력 있게 판단하고, 책임 있게 실행합니다.",
+                eng: "Fully understanding the situation and making accountable decisions without hesitation.",
+                delay: "delay-100",
+              },
+              {
+                title: "Built on Execution",
+                kor: "말이 아닌 실행으로 증명합니다.",
+                eng: "Results created in the field are the only true form of trust.",
+                delay: "delay-200",
+              },
+              {
+                title: "Partnership",
+                kor: "같은 편에서 끝까지 함께합니다.",
+                eng: "We share responsibility until the outcome is complete.",
+                delay: "delay-300",
+              },
+            ].map((value, idx) => (
+              <div
+                key={idx}
+                className={`bg-brand-dark p-10 border border-white/5 hover:border-brand-accent/50 
+                  transition-all duration-500 group relative overflow-hidden
+                  ${valuesRef.isVisible ? `opacity-100 translate-y-0 ${value.delay}` : "opacity-0 translate-y-4"}`}
+              >
+                {/* Hover glow effect */}
+                <div className="absolute inset-0 bg-gradient-to-br from-brand-accent/0 to-brand-accent/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
 
-            <div className="bg-brand-dark p-8 border border-white/5 hover:border-brand-accent/50 transition-colors group">
-              <h4 className="text-2xl md:text-3xl font-heading font-semibold text-white uppercase tracking-wide mb-4 group-hover:text-brand-accent transition-colors">
-                Built on Execution
-              </h4>
-              <p className="text-gray-300 text-base md:text-lg leading-relaxed mb-4 break-keep">
-                말이 아닌 실행으로 증명합니다.
-              </p>
-              <p className="text-gray-500 text-sm md:text-base leading-relaxed group-hover:text-white transition-colors font-heading">
-                Results created in the field are the only true form of trust.
-              </p>
-            </div>
-
-            <div className="bg-brand-dark p-8 border border-white/5 hover:border-brand-accent/50 transition-colors group">
-              <h4 className="text-2xl md:text-3xl font-heading font-semibold text-white uppercase tracking-wide mb-4 group-hover:text-brand-accent transition-colors">
-                Partnership
-              </h4>
-              <p className="text-gray-300 text-base md:text-lg leading-relaxed mb-4 break-keep">
-                같은 편에서 끝까지 함께합니다.
-              </p>
-              <p className="text-gray-500 text-sm md:text-base leading-relaxed group-hover:text-white transition-colors font-heading">
-                We share responsibility until the outcome is complete.
-              </p>
-            </div>
+                <div className="relative z-10">
+                  <h4 className="text-2xl md:text-3xl font-heading font-semibold text-white uppercase tracking-wide mb-6 group-hover:text-brand-accent transition-colors duration-300">
+                    {value.title}
+                  </h4>
+                  <p className="text-gray-300 text-base md:text-lg leading-relaxed mb-5 break-keep">
+                    {value.kor}
+                  </p>
+                  <p className="text-gray-500 text-sm md:text-base leading-relaxed group-hover:text-gray-300 transition-colors duration-300 font-heading">
+                    {value.eng}
+                  </p>
+                </div>
+              </div>
+            ))}
           </div>
         </div>
       </div>
