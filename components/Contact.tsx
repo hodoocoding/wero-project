@@ -1,4 +1,5 @@
 import React from "react";
+import Image from "next/image";
 import { MapPin, Mail, ArrowUpRight } from "lucide-react";
 
 const Contact: React.FC = () => {
@@ -12,11 +13,11 @@ const Contact: React.FC = () => {
           {/* Left: CTA */}
           <div className="flex flex-col justify-between">
             <div>
-              <h2 className="text-5xl md:text-7xl font-display font-bold uppercase tracking-tighter mb-8 leading-none">
+              <h2 className="text-4xl md:text-5xl font-display font-bold uppercase tracking-tighter mb-6 leading-none">
                 Let's <br /> Start{" "}
                 <span className="text-brand-accent">Execution.</span>
               </h2>
-              <p className="text-gray-400 max-w-md text-lg">
+              <p className="text-gray-400 max-w-md text-base">
                 Ready to prove results in the field? <br />
                 Contact us for a partnership built on trust and action.
               </p>
@@ -25,7 +26,7 @@ const Contact: React.FC = () => {
             <div className="mt-12">
               <a
                 href="mailto:master@bbpartners.co.kr"
-                className="inline-flex items-center gap-4 text-2xl md:text-3xl font-bold hover:text-brand-accent transition-colors group"
+                className="inline-flex items-center gap-3 text-xl md:text-2xl font-bold hover:text-brand-accent transition-colors group"
               >
                 master@bbpartners.co.kr
                 <ArrowUpRight className="group-hover:-translate-y-1 group-hover:translate-x-1 transition-transform" />
@@ -45,7 +46,7 @@ const Contact: React.FC = () => {
                     className="text-brand-accent shrink-0 mt-1"
                     size={20}
                   />
-                  <p className="text-xl leading-relaxed">
+                  <p className="text-lg leading-relaxed">
                     123 Creative Avenue, Gangnam-gu,
                     <br />
                     Seoul, South Korea
@@ -60,7 +61,7 @@ const Contact: React.FC = () => {
                 <div className="flex items-start gap-3">
                   <Mail className="text-brand-accent shrink-0 mt-1" size={20} />
                   <div>
-                    <p className="text-xl font-medium">
+                    <p className="text-lg font-medium">
                       master@bbpartners.co.kr
                     </p>
                     <p className="text-sm text-gray-500 mt-2">
@@ -75,37 +76,14 @@ const Contact: React.FC = () => {
 
         <div className="border-t border-white/10 pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
           {/* Footer Logo */}
-          <div className="flex items-center gap-2 opacity-50 hover:opacity-100 transition-opacity">
-            <svg
-              width="36"
-              height="24"
-              viewBox="0 0 50 34"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                d="M10 2V22"
-                stroke="white"
-                strokeWidth="6"
-                strokeLinecap="round"
-              />
-              <path
-                d="M36 2V22"
-                stroke="white"
-                strokeWidth="6"
-                strokeLinecap="round"
-              />
-              <path
-                d="M10 22 C 10 32, 23 32, 23 22 C 23 12, 36 12, 36 22 C 36 32, 23 32, 23 22 C 23 12, 10 12, 10 22"
-                stroke="#FFAB00"
-                strokeWidth="5"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-            </svg>
-            <span className="font-display font-bold text-xl text-white">
-              partners
-            </span>
+          <div className="opacity-60 hover:opacity-100 transition-opacity">
+            <Image
+              src="/images/bblogo_white.png"
+              alt="BB Partners"
+              width={120}
+              height={32}
+              className="object-contain"
+            />
           </div>
           <p className="text-xs text-gray-600 uppercase tracking-widest">
             © 2025 BB PARTNERS. All Rights Reserved.
