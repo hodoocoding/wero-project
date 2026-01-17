@@ -1,22 +1,100 @@
 "use client";
-import React from "react";
+import React, { useState, useEffect, useCallback, useRef } from "react";
 import { ChevronDown } from "lucide-react";
 
+// 비디오 목록 - 필요에 따라 추가/수정 가능
+const HERO_VIDEOS = [
+  "/video/hero-01-exhibition.mp4",
+  "/video/hero-02-seamless.mp4",
+  "/video/hero-03-brand.mp4",
+];
+
+// 비디오 전환 간격 (밀리초) - 각 비디오 재생 후 다음으로 전환
+const VIDEO_TRANSITION_DELAY = 500; // 전환 효과 시간 (ms)
+
 const Hero: React.FC = () => {
+  const [currentVideoIndex, setCurrentVideoIndex] = useState(0);
+  const [isTransitioning, setIsTransitioning] = useState(false);
+  const [isVideoLoaded, setIsVideoLoaded] = useState(false);
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const nextVideoRef = useRef<HTMLVideoElement>(null);
+
+  // 다음 비디오로 전환
+  const goToNextVideo = useCallback(() => {
+    setIsTransitioning(true);
+
+    // 페이드 아웃 후 비디오 변경
+    setTimeout(() => {
+      setCurrentVideoIndex((prev) => (prev + 1) % HERO_VIDEOS.length);
+      setIsTransitioning(false);
+    }, VIDEO_TRANSITION_DELAY);
+  }, []);
+
+  // 특정 비디오로 이동
+  const goToVideo = useCallback(
+    (index: number) => {
+      if (index === currentVideoIndex) return;
+
+      setIsTransitioning(true);
+      setTimeout(() => {
+        setCurrentVideoIndex(index);
+        setIsTransitioning(false);
+      }, VIDEO_TRANSITION_DELAY);
+    },
+    [currentVideoIndex],
+  );
+
+  // 현재 비디오가 끝나면 다음 비디오로 자동 전환
+  const handleVideoEnded = useCallback(() => {
+    goToNextVideo();
+  }, [goToNextVideo]);
+
+  // 비디오 로드 완료 시
+  const handleVideoLoaded = useCallback(() => {
+    setIsVideoLoaded(true);
+  }, []);
+
+  // 다음 비디오 미리 로드
+  useEffect(() => {
+    const nextIndex = (currentVideoIndex + 1) % HERO_VIDEOS.length;
+    const nextVideoElement = nextVideoRef.current;
+
+    if (nextVideoElement) {
+      nextVideoElement.src = HERO_VIDEOS[nextIndex];
+      nextVideoElement.load();
+    }
+  }, [currentVideoIndex]);
+
   return (
     <section className="relative h-screen w-full flex items-center justify-center overflow-hidden bg-brand-black">
-      {/* Background Image - Creative / Abstract Vibe */}
+      {/* Background Videos Container */}
       <div className="absolute inset-0 w-full h-full">
-        {/* Hero Background - LCP optimized with priority */}
+        {/* 현재 재생 중인 비디오 */}
         <video
+          ref={videoRef}
+          key={currentVideoIndex}
           autoPlay
-          loop
           muted
           playsInline
-          className="w-full h-full object-cover opacity-60"
+          onEnded={handleVideoEnded}
+          onLoadedData={handleVideoLoaded}
+          className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-500 ${
+            isTransitioning ? "opacity-0" : "opacity-60"
+          } ${!isVideoLoaded ? "opacity-0" : ""}`}
         >
-          <source src="/video/hero-background.mp4" type="video/mp4" />
+          <source src={HERO_VIDEOS[currentVideoIndex]} type="video/mp4" />
         </video>
+
+        {/* 다음 비디오 미리 로드 (숨김) */}
+        <video
+          ref={nextVideoRef}
+          muted
+          playsInline
+          preload="auto"
+          className="hidden"
+        />
+
+        {/* 그라데이션 오버레이 */}
         <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/30 to-brand-black"></div>
       </div>
 
@@ -50,11 +128,52 @@ const Hero: React.FC = () => {
         </div>
       </div>
 
+      {/* Video Navigation Indicators */}
+      <div className="absolute bottom-24 left-1/2 transform -translate-x-1/2 z-20 flex items-center gap-3">
+        {HERO_VIDEOS.map((_, index) => (
+          <button
+            key={index}
+            onClick={() => goToVideo(index)}
+            className={`group relative w-12 h-1 rounded-full overflow-hidden transition-all duration-300 ${
+              index === currentVideoIndex
+                ? "bg-brand-accent"
+                : "bg-white/30 hover:bg-white/50"
+            }`}
+            aria-label={`Video ${index + 1}`}
+          >
+            {/* Progress indicator for current video */}
+            {index === currentVideoIndex && (
+              <div
+                className="absolute inset-0 bg-white origin-left"
+                style={{
+                  animation: "progressBar linear forwards",
+                  animationDuration: videoRef.current?.duration
+                    ? `${videoRef.current.duration}s`
+                    : "10s",
+                }}
+              />
+            )}
+          </button>
+        ))}
+      </div>
+
       {/* Scroll Indicator */}
       <div className="absolute bottom-10 left-1/2 transform -translate-x-1/2 animate-bounce flex flex-col items-center gap-2 opacity-50">
         <span className="text-[10px] tracking-widest uppercase">Scroll</span>
         <ChevronDown className="text-white" size={24} />
       </div>
+
+      {/* Progress bar animation styles */}
+      <style jsx>{`
+        @keyframes progressBar {
+          from {
+            transform: scaleX(0);
+          }
+          to {
+            transform: scaleX(1);
+          }
+        }
+      `}</style>
     </section>
   );
 };
