@@ -5,40 +5,40 @@ import { Lightbulb, Car, UserCheck, Armchair } from "lucide-react";
 const Services: React.FC = () => {
   const services = [
     {
-      icon: <Lightbulb size={40} />,
+      icon: <Lightbulb size={32} />,
       title: "EXPERIENTIAL / CONTENTS",
       items: [
         "Concept, Design and execution of immersive brand experiences",
         "Brand partnership / Celebrity & Influencer communication",
         "Social media marketing / Digital contents creation",
       ],
-      img: "https://images.unsplash.com/photo-1505373877841-8d25f7d46678?q=80&w=2012&auto=format&fit=crop",
+      img: "/images/service-experiential.jpg",
     },
     {
-      icon: <Car size={40} />,
+      icon: <Car size={32} />,
       title: "VEHICLE MANAGEMENT",
       items: [
         "Professional logistics",
         "Car detailing / Showcase setting",
         "Company vehicle management",
       ],
-      img: "https://images.unsplash.com/photo-1617788138017-80ad40651399?q=80&w=2070&auto=format&fit=crop",
+      img: "/images/service-vehicle.jpg",
     },
     {
-      icon: <UserCheck size={40} />,
+      icon: <UserCheck size={32} />,
       title: "PROFESSIONAL STAFFING",
       items: [
         "Brand Experience & Operation staff",
         "VIP Chauffeur / Premium Valet",
         "Executive Protection / Driving Instructor",
       ],
-      img: "https://images.unsplash.com/photo-1551836022-d5d88e9218df?q=80&w=2070&auto=format&fit=crop",
+      img: "/images/service-staffing.jpg",
     },
     {
-      icon: <Armchair size={40} />,
+      icon: <Armchair size={32} />,
       title: "RENTAL SERVICE",
       items: ["Digital devices", "Luxury furniture rental for events"],
-      img: "https://images.unsplash.com/photo-1524758631624-e2822e304c36?q=80&w=2070&auto=format&fit=crop",
+      img: "/images/service-rental.jpg",
     },
   ];
 
@@ -74,47 +74,92 @@ const Services: React.FC = () => {
           {services.map((s, idx) => (
             <div
               key={idx}
-              className="group relative min-h-[400px] overflow-hidden bg-brand-black border border-white/5 flex flex-col"
+              className="group relative min-h-[450px] overflow-hidden border border-white/5 cursor-pointer"
             >
-              {/* Background Image on Hover - CLS prevention with fill */}
-              <div className="absolute inset-0 opacity-0 group-hover:opacity-20 transition-opacity duration-700">
+              {/* Background Image - Always visible, enhanced on hover */}
+              <div className="absolute inset-0">
                 <Image
                   src={s.img}
                   alt={s.title}
                   fill
                   sizes="(max-width: 768px) 100vw, 50vw"
-                  className="object-cover grayscale"
+                  className="object-cover transition-all duration-700 ease-out
+                    grayscale brightness-[0.3] 
+                    group-hover:grayscale-0 group-hover:brightness-[0.6] group-hover:scale-105"
                   loading="lazy"
                 />
+                {/* Gradient overlay for text readability */}
+                <div className="absolute inset-0 bg-gradient-to-t from-black via-black/60 to-transparent opacity-90 group-hover:opacity-70 transition-opacity duration-500"></div>
+                {/* Amber accent glow on hover */}
+                <div className="absolute inset-0 bg-gradient-to-br from-brand-accent/0 to-brand-accent/20 opacity-0 group-hover:opacity-100 transition-opacity duration-700"></div>
               </div>
 
-              <div className="relative z-10 p-10 flex flex-col h-full justify-between">
+              {/* Content */}
+              <div className="relative z-10 p-8 md:p-10 flex flex-col h-full justify-between">
+                {/* Top: Icon and Number */}
                 <div className="flex justify-between items-start">
-                  <div className="text-brand-accent bg-brand-accent/10 p-4 rounded-full mb-6">
+                  <div
+                    className="text-brand-accent bg-brand-accent/10 backdrop-blur-sm p-3 rounded-full border border-brand-accent/20 
+                    group-hover:bg-brand-accent group-hover:text-black transition-all duration-500"
+                  >
                     {s.icon}
                   </div>
-                  <span className="text-white/20 font-display text-4xl font-bold">
+                  <span
+                    className="text-white/10 font-display text-5xl font-bold 
+                    group-hover:text-brand-accent/30 transition-colors duration-500"
+                  >
                     0{idx + 1}
                   </span>
                 </div>
 
-                <div>
-                  <h3 className="text-2xl font-display font-bold text-white mb-6 group-hover:text-brand-accent transition-colors">
+                {/* Bottom: Title and Items */}
+                <div className="transform translate-y-4 group-hover:translate-y-0 transition-transform duration-500">
+                  <h3
+                    className="text-xl md:text-2xl font-display font-bold text-white mb-4 
+                    group-hover:text-brand-accent transition-colors duration-300"
+                  >
                     {s.title}
                   </h3>
-                  <ul className="space-y-2">
+                  <ul className="space-y-2 opacity-70 group-hover:opacity-100 transition-opacity duration-500">
                     {s.items.map((item, i) => (
                       <li
                         key={i}
-                        className="text-gray-400 text-sm flex items-start gap-2"
+                        className="text-gray-300 text-sm flex items-start gap-2"
                       >
-                        <span className="w-1.5 h-1.5 bg-brand-accent mt-1.5 rounded-full shrink-0"></span>
+                        <span
+                          className="w-1.5 h-1.5 bg-brand-accent mt-1.5 rounded-full shrink-0 
+                          group-hover:scale-125 transition-transform duration-300"
+                        ></span>
                         {item}
                       </li>
                     ))}
                   </ul>
+
+                  {/* Hover indicator */}
+                  <div
+                    className="mt-6 flex items-center gap-2 text-brand-accent text-xs font-bold tracking-widest uppercase
+                    opacity-0 translate-y-2 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-500 delay-100"
+                  >
+                    <span>Learn More</span>
+                    <svg
+                      className="w-4 h-4 group-hover:translate-x-1 transition-transform duration-300"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M17 8l4 4m0 0l-4 4m4-4H3"
+                      />
+                    </svg>
+                  </div>
                 </div>
               </div>
+
+              {/* Animated border on hover */}
+              <div className="absolute inset-0 border-2 border-brand-accent/0 group-hover:border-brand-accent/50 transition-colors duration-500 pointer-events-none"></div>
             </div>
           ))}
         </div>
